@@ -53,7 +53,28 @@ function displayCite() {
 		elem.appendChild(superscript);
 	}	
 }
+
+function displayNavigation() {
+	if (!document.createElement) return false;
+	if (!document.getElementsByTagName) return false;
+	if (!document.createTextNode) return false;
+	var navigation = document.getElementsByTagName("a");
+	var list = document.createElement("ul");
+	var body = document.getElementsByTagName("body")[0];
+	body.appendChild(list);
+	for (var i = 0; i < navigation.length; i++) {
+		var current_a = navigation[i];
+		if (!current_a.getAttribute("accesskey")) continue;
+		var href = current_a.getAttribute("href");
+		var accesskey = current_a.getAttribute("accesskey");
+		var li = document.createElement("li");
+		var li_text = document.createTextNode(href + "'accesskey: " + accesskey);
+		li.appendChild(li_text);
+		list.appendChild(li);
+	}
+}
 window.onload = function() {
 	display();
 	displayCite();
+	displayNavigation();
 }
