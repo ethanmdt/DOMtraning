@@ -92,6 +92,6 @@ tr.highlight td {
 
 
 
-input.placeholder {
-  color: grey;
+.placeholder {
+  color: blue;
 }
