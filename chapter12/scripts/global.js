@@ -231,10 +231,10 @@ function resetFields(whichform) {
   for (var i = 0; i < whichform.elements.length; i++) {
     var element = whichform.elements[i];
     if (element.type == "submit") continue;
-    var check = element.placeholder || element.getAttribute("placeholder");
+    var check = element.placehold || element.getAttribute("placehold");
     if (!check) continue;
     element.onfocus = function() {
-      var text = this.placeholder || this.getAttribute("placeholder");
+      var text = this.placehold || this.getAttribute("placehold");
       if (this.value == text) {
         this.className = '';
         this.value = "";
@@ -242,26 +242,18 @@ function resetFields(whichform) {
     }
     element.onblur = function() {
       if (this.value == "") {
-        this.className = 'placeholder';
-        this.value = this.placeholder || this.getAttribute("placeholder");
+        this.className = 'placehold';
+        this.value = this.placehold || this.getAttribute("placehold");
       }
     }
     element.onblur();
   }
 }
-function prepareForms() {
-  for (var i = 0; i < document.forms.length; i++) {
-    var thisform = document.forms[i];
-    resetFields(thisform);
-    thisform.onsubmit = function() {
-      return validateForm(this);
-    }
-  }
-}
+
 
 function isFilled(field) {
   if (field.value.replace(' ','').length == 0) return false;
-  var placeholder = field.placeholder || field.getAttribute("placeholder");
+  var placeholder = field.placehold || field.getAttribute("placehold");
   return (field.value != placeholder);
 }
 function isEmail(field) {
@@ -270,7 +262,8 @@ function isEmail(field) {
 function validateForm(whichform) {
   for (var i = 0; i < whichform.elements.length; i++) {
     var element = whichform.elements[i];
-    if (element.required == "required") {
+    var requir = element.getAttribute("requir");
+    if (requir == "required") {
       if (!isFilled(element)) {
         alert("please fill in the" + element.name + "field.");
         return false;
@@ -281,9 +274,18 @@ function validateForm(whichform) {
           return false;
         }
     }
-    return true;
   }
+  return true;
 } 
+function prepareForms() {
+  for (var i = 0; i < document.forms.length; i++) {
+    var thisform = document.forms[i];
+    resetFields(thisform);
+    thisform.onsubmit = function() {
+      return validateForm(this);
+    }
+  }
+}
 addLoadEvent(highlightPage);
 addLoadEvent(preSlideshow);
 addLoadEvent(prepareInternalnav);
